@@ -1,2 +1,2 @@
 # KPI-Dashboard
-Op prem Genesys/PureConnect reporting dashboard with agent and management view.
+On-prem Genesys/PureConnect reporting dashboard with agent and management view.
