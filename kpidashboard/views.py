@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+
 data = [
     True, 'MCSS Nav Patient', 'MCSS Nav Callbacks',
      'MCSS Nav Nurse', 'MCSS Nav MCH', 'MCSS Nav MyChart',
-
     ]
 
 
@@ -43,26 +43,10 @@ agent_data = {
     }
 }
 
-# Create your views here.
-def kpidashboard(request):
-    context={
-        "agent_data" : agent_data
-    }
-    return render(request,context=context,
-        template_name="kpidashboard/dashboard.html",
-        )
-
-def kpidepartmentdashboard(request):
-    context={
-        'data':data,
-    }
-    return render(request, context=context,
-        template_name="kpidashboard/departmentstatus.html",
-    )
 
 def agent(request):
     context={
-        'data':data,
+        'data':agent_data,
     }
     return render(request, context=context,
     template_name="kpidashboard/viewagent.html")
@@ -70,7 +54,7 @@ def agent(request):
 
 def department(request):
     context={
-        'data':data,
+        'data':agent_data,
     }
     return render(request, context=context,
     template_name="kpidashboard/viewdepartment.html")
