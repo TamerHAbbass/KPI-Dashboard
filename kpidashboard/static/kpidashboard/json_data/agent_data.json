@@ -1,0 +1,34 @@
+{
+    "agent" : "Hector Salamanca",
+    "executive" : false,
+    "talk time" : {
+        "total_talk_time": "05:34:01",
+        "Average Talk Time": "00:24:00"
+    },
+    "hold_time" : {
+        "total_hold_time": "05:34:01",
+        "Average hold Time": "00:24:00"
+    },
+    "after_call_work_time" : {
+        "Total After Call Work Time": "05:34:01",
+        "Average After Call Work Time": "00:24:00"
+    },
+    "answered" : {
+        "calls": "15/16",
+        "callbacks": "7/9",
+        "missed_calls": "1/34"
+    },
+    "Average Speed to Answer Calls" : {
+        "Last Call": "00:07",
+        "all Calls": "00:15",
+    },
+    "minutes_in_each_status": {
+        "Available" : 80,
+        "Available, No ACD" : 5,
+        "Lunch" : 60,
+        "At a trai" : 0,
+        "Additiona" : 18,
+        "Out of Of" : 0,
+        "ACD – Age" : 54
+    }
+}

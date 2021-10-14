@@ -1,0 +1,7 @@
+{"executive" : true,
+    "workgroups" : [
+        "MCSS Nav Patient", "MCSS Nav Callbacks",
+        "MCSS Nav Nurse", "MCSS Nav MCH", 
+        "MCSS Nav MyChart"
+        ],
+}

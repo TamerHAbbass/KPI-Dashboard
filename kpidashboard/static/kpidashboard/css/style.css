@@ -1,0 +1,118 @@
+body {
+    background-color: #F0F8FF;
+
+}
+
+nav, footer {
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.5);
+    
+}
+
+footer {
+    box-shadow: inset 0 2px 4px -1px rgba(0,0,0,.5);
+}
+
+h1 {
+    text-align: center;
+}
+
+#averageCallAnswerSpeed {
+    margin: 3.72%;
+}
+
+#rowOneAgent {
+    height: 25% !important;
+}
+
+#rowTwoAgent {
+    height: 25% !important;
+}
+
+#callAnswerNumberRed {
+    color: red;
+}
+
+
+.col, #col, .col-2, .col-3, .col-4, .col-1 {
+    border-radius: 3px;
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.5);
+    background-color: #EAFCFF;
+    margin: .5%;
+}
+
+#time, #timespeed {
+    color: #3B953D;
+}
+
+#timespeed {
+    padding-left: 10%;
+}
+
+td, tr, th {
+    margin: 0;
+    padding: 0;
+}
+
+.row {
+    text-align: center;
+}
+
+.col-sm {
+    border-style: groove;
+    border-color: lightgray;
+    margin: auto;
+}
+
+
+
+.progress, #callAnswerNumber, #callAnswerNumberRed {
+    margin-top: 13%;
+    margin-bottom: 13%;
+}
+
+#missingicon {
+    margin-top: 10%;
+}
+
+.container-fullwidth {
+    margin: 2%;
+    
+}
+
+#widgetTitle {
+    background-color: #CAF0F8;
+    padding: .5%;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.5);
+    padding: 0;
+
+}
+
+h6 {
+    margin-top: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+    background-color: #CAF0F8;
+    border-radius: 3px;
+}
+
+#agentSpecific, #departmentSpecific {
+    padding-left: 2%;
+    padding-right: 2%;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.5);
+    position: relative;
+    background-image: linear-gradient(25deg, #48CAE4, #90E0EF);
+    background-color: #48CAE4;
+    margin: .5%;
+    padding-top: 1%;
+}
+
+#agentStatusContainer {
+    background-color: #89DEEE;
+}
+
+#minutes {
+    max-height: 71.72mm;
+}
