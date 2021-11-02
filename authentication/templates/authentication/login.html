@@ -1,0 +1,23 @@
+{% include "kpidashboard/header.html" %}
+{% block content %}
+
+    <div class="container-fullwidth" id="widgetbox" style='width:25%; margin:auto; margin-top: 10%;'>
+    <div class="container-fullwidth" id="agentSpecific" style="margin:auto; text-align:center; padding-bottom: 1%;">
+    
+        <div class="" id="rowOneAgent" style="width:100%; background-color:#F0F8FF;">
+        <form method="POST">
+        <div class="d-flex justify-content-center p-2" id="widgetTitle" style="margin-bottom: .5%; padding-left:1%;"><h5>Login</h5></div>
+        {% csrf_token %}
+        <fieldset class="">
+            <br>
+            {{ form.as_p }}
+        </fieldset>
+        <button class="btn btn-outline-info" type="submit">login</button>
+
+        </form>
+        <br>
+       </div>
+    </div>
+    </div>
+       
+{% endblock content %}

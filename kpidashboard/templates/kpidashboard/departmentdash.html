@@ -1,0 +1,164 @@
+<!-- KPI Dashboard Department -->
+{% load static %}
+<div class="container-fullwidth" id="widgetbox" onload="runpy();">
+    <div class="container-fullwidth" id="agentSpecific">
+        
+        <div class="d-flex justify-content-center p-2" id="widgetTitle" style="margin-bottom: .5%;">
+        <h5>Department Status</h5>
+        <form style="position:absolute;right:3%;" action="{% url 'dash:department' %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn btn-outline-info my-2 my-sm-0" type="submit"> search </button>
+            <input name="data" type="text" placeholder="Enter Agent Username">
+            <input type="date" name='daterange'>
+            
+        </form>
+            
+        </div>
+        <div class="row">
+            <div class="col overflow-auto" id="minutes" style="padding:0; margin:0;">
+                <h6>Time In Each Status</h6>
+                <table class="table table-hover">
+                    <thead class="sticky-top" style="background-color:#CAF0F8; padding:0; margin:0;">
+                        <tr>
+                            <th>#</th>
+                            {% for i in data.dept.WorkgroupStatusTitle %}
+                                <th>{{ i }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    {% for i in data.dept.WorkgroupStatusTimes %}
+                        <tr>
+                            <th scope="row">{{forloop.counter}}</th>
+
+                                {% for j in i %}
+
+                                    {% if forloop.counter0 != 0 %}
+                                    <td>{{ j|date:'H:i:s' }}</td>
+                                    {% endif %}
+                                    {% if forloop.counter0 == 0 %}
+                                    <td><strong>{{ j }}</strong></td>
+                                    {% endif %}
+
+                                {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col" id="rowOneAgent">
+                <h6>Talk Time</h6>
+                <div class="row">
+                    <div class="col-sm">
+                        <h6>Total Talk Time</h6>
+                        <img src="{% static 'kpidashboard/img/talktimeicon.png' %}" width=20% height="20%">
+                        <h1 id="time">{{ data.dept.WorkgroupTalkTime }}</h1>
+                    </div>
+
+                    <div class="col-sm">
+                        <h6>Average Talk Time</h6>
+                        <img src="{% static 'kpidashboard/img/averagetalktimeicon.png' %}" width=20% height="20%">
+                        <h1 id="time">{{ data.dept.WorkgroupAvgTalkTime}}</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col" id="rowOneAgent">
+                <h6>Hold Time</h6>
+                <div class="row">
+                    <div class="col-sm">
+                        <h6>Total Hold Time</h6>
+                        <img src="{% static 'kpidashboard/img/holdtimeicon.png' %}" width=20% height="20%">
+                        <h1 id="time">{{ data.dept.WorkgroupHoldTime }}</h1>
+                    </div>
+                    <div class="col-sm">
+                        <h6>Average Hold Time</h6>
+                        <img src="{% static 'kpidashboard/img/averageholdtimeicon.png' %}" width=20% height="20%">
+                        <h1 id="time">{{ data.dept.WorkgroupAvgHoldTime }}</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col" id="rowOneAgent">
+                <div class="title"><h6>After Call Work Time</h6></div>
+                <div class="row">
+                    <div class="col-sm">
+                        <h6>Total After Call Work Time</h6>
+                        <img src="{% static 'kpidashboard/img/worktimeicon.png' %}" width=30.5% height="30.5%">
+                        <h1 id="time">{{ data.dept.WorkgroupAfterCallWorkTime }}</h1>
+                    </div>
+                    <div class="col-sm">
+                        <h6>Average After Call Work Time</h6>
+                        <img src="{% static 'kpidashboard/img/averageworktimeincon.png' %}" width=20% height="25%">
+                        <h1 id="time">{{ data.dept.WorkgroupAvgAfterCallWorkTime }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col" id="rowTwoAgent">
+                <h6>Answered</h6>
+                <div class="row">
+                    <div class="col-sm">
+                        <h6>Calls</h6>
+                        <img src="{% static 'kpidashboard/img/phoneicon.png' %}" width=20% height="20%">
+                        <h1 id="callAnswerNumber">{{ data.dept.NumberOfConnectedWorkgroupInteractions }}/{{ data.dept.NumberOfWorkgroupInteractions }}</h1>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ data.dept.NumberOfConnectedWorkgroupInteractionsPercentage }}%" aria-valuenow="99" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <h6>Callbacks</h6>
+                        <img src="{% static 'kpidashboard/img/averagephoneicon.png' %}" width=20% height="20%">
+                        <h1 id="callAnswerNumber">{{ data.dept.WorkgroupConnectedNumberCallbacks }}/{{ data.dept.WorkgroupTotalNumberCallbacks }}</h1>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ data.dept.CallbackPercentage }}" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+                        </div>                                
+                    </div>
+                    <div class="col-sm">
+                    <h6>Missed Calls</h6>
+                            <img src="{% static 'kpidashboard/img/missedcallsicon.png' %}" width=20% height="20%">
+                            <h1 id="callAnswerNumberRed">{{ data.dept.NumberWorkgroupMissedInteractions }}/{{ data.dept.NumberOfWorkgroupInteractions }}</h1>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: {{ data.dept.NumberWorkgroupMissedInteractionsPercentage }}%" aria-valuenow=0 aria-valuemin="0" aria-valuemax=100 style="width: 75%"></div>
+                            </div>
+                </div>
+            </div>
+        </div>
+
+
+
+            <div class="col-2" id="rowTwoAgent">
+                <h6>Average Speed to Answer Calls</h6>
+                <div class="row">
+                    <div class="col-sm">
+                        <h6>All Calls</h6>
+                            <img id="averageCallAnswerSpeed" src="{% static 'kpidashboard/img/averagespeedicon.png' %}" style="padding-bottom:10%; padding-top:14%;"width=25% height="20%">
+                            <h1  id="timespeed">{{ data.dept.WorkgroupAverageAnswerSpeed }}</h1>
+                    </div>
+                </div>
+            </div>
+        
+                <div class="col overflow-auto" id="minutes">
+                    <h6>Agent Total Status Time</h6>
+                    <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Time</th>
+                        </tr>
+                    </thead>
+                        {% for i, j in data.dept.Org_Status_Data %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ i|title }}</td>
+                            <td><strong>{{ j|date:'H:i:s' }}</strong></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+        </div>
+    </div>
+</div>

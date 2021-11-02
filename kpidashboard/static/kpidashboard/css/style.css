@@ -17,7 +17,7 @@ h1 {
 }
 
 #averageCallAnswerSpeed {
-    margin: 3.72%;
+    height: 25% !important;
 }
 
 #rowOneAgent {
@@ -25,7 +25,7 @@ h1 {
 }
 
 #rowTwoAgent {
-    height: 25% !important;
+    height: 30% !important;
 }
 
 #callAnswerNumberRed {
@@ -45,17 +45,23 @@ h1 {
 }
 
 #timespeed {
-    padding-left: 10%;
+    padding: 2%;
 }
 
 td, tr, th {
     margin: 0;
-    padding: 0;
+    padding: 2px;
 }
 
 .row {
     text-align: center;
 }
+
+
+html {
+    min-width: 100%;
+}
+
 
 .col-sm {
     border-style: groove;
@@ -63,7 +69,10 @@ td, tr, th {
     margin: auto;
 }
 
-
+#datepicker {
+    position:absolute;
+    left:-250px;
+}
 
 .progress, #callAnswerNumber, #callAnswerNumberRed {
     margin-top: 13%;
@@ -115,4 +124,8 @@ h6 {
 
 #minutes {
     max-height: 71.72mm;
+}
+
+.timeInEachStatus {
+    position:sticky;
 }
