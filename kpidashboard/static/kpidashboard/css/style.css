@@ -40,13 +40,16 @@ h1 {
     margin: .5%;
 }
 
+
 #time, #timespeed {
     color: #3B953D;
 }
 
+
 #timespeed {
     padding: 2%;
 }
+
 
 td, tr, th {
     margin: 0;
@@ -96,6 +99,14 @@ html {
     padding: 0;
 
 }
+.label_box {
+    position:absolute;
+    right:5%;
+}
+.label_box_left {
+    position:absolute;
+    left:5%;
+}
 
 h6 {
     margin-top: 5px;
@@ -124,6 +135,7 @@ h6 {
 
 #minutes {
     max-height: 71.72mm;
+    width: 100%;
 }
 
 .timeInEachStatus {

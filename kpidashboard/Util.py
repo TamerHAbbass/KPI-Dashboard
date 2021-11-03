@@ -1,5 +1,6 @@
 import pyodbc
 import time
+import datetime
 
 
 class ParseData:
@@ -154,13 +155,17 @@ class DataBase:
         cnxn = pyodbc.connect(f"DSN=IC_Server;UID={username};PWD={password}")
         self.sqlConnection = cnxn.cursor()
 
-    
+
     def getDate(self, date):
         self.date = date
+        if not date or ' ' == date:
+            return datetime.datetime.now().strftime('%d/%m/%Y') 
+        else:
+            return datetime.datetime.strptime(date, '%Y-%m-%d').strftime('%m/%d/%Y')
 
 
     def getInteractionData(self, user, days):
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE '{self.date}%'"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -176,11 +181,11 @@ class DataBase:
         if data[0][0] != None:
             self.HoldTime = data[0][0]/1000
             self.AvgHoldTime = data[0][1]/1000
-    
-    
+
+
 
     def getAfterCallWorkTime(self, user, days):
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE '{self.date}%'"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -196,7 +201,7 @@ class DataBase:
 
 
     def getWorkgroupsAfterCallWorkTime(self, days):
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE '{self.date}%'"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -209,7 +214,7 @@ class DataBase:
 
 
     def getAgentCallbackData(self, user, days):
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE '{self.date}%'"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -221,7 +226,7 @@ class DataBase:
 
 
     def getConnectedWorkgroupCallbackData(self, days):
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE '{self.date}%'"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -237,7 +242,7 @@ class DataBase:
 
 
     def getWorkgroupCallbackData(self, days):
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE '{self.date}%'"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -254,7 +259,7 @@ class DataBase:
 
 
     def getCallbackData(self, days):
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE '{self.date}%'"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -266,7 +271,7 @@ class DataBase:
 
 
     def getNumberQueueInteractions(self, user, days):
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE '{self.date}%'"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -278,7 +283,7 @@ class DataBase:
 
 
     def getNumberAnsweredQueuedInteractions(self, user, days):
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE '{self.date}%'"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -290,7 +295,7 @@ class DataBase:
 
 
     def getStatusData(self, user, days):
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE '{self.date}%'"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -301,7 +306,7 @@ class DataBase:
     
 
     def getOrgStatusData(self, days):
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE CONVERT(Datetime, CONVERT(varchar, '{self.date}', 103))"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -318,7 +323,7 @@ class DataBase:
     
 
     def getAgentStatusData(self, user, days):
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE '{self.date}%'"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -354,7 +359,7 @@ class DataBase:
 
 
     def getWorkgroupTalkStats(self, days):
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE '{self.date}%'"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -362,12 +367,13 @@ class DataBase:
         SQL_Agent_Status = f"SELECT SUM(tConnected), AVG(tConnected) FROM InteractionSummary WHERE MediaType=0 AND LastAssignedWorkgroupID IS NOT NULL AND InitiatedDateTimeUTC {date};"
         self.sqlConnection.execute(SQL_Agent_Status)
         data = self.sqlConnection.fetchall()[0]
-        self.WorkgroupTalkTime = data[0]//1000
-        self.WorkgroupAvgTalkTime = data[1]//1000
+        if data[0]:
+            self.WorkgroupTalkTime = data[0]//1000
+            self.WorkgroupAvgTalkTime = data[1]//1000
     
 
     def getWorkgroupHoldStats(self, days) :
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE '{self.date}%'"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -375,12 +381,13 @@ class DataBase:
         SQL_Agent_Status = f"SELECT SUM(tHeld), AVG(tHeld) FROM InteractionSummary WHERE MediaType=0 AND LastAssignedWorkgroupID IS NOT NULL AND InitiatedDateTimeUTC {date};"
         self.sqlConnection.execute(SQL_Agent_Status)
         data = self.sqlConnection.fetchall()[0]
-        self.WorkgroupHoldTime = data[0]//1000
-        self.WorkgroupAvgHoldTime = data[1]//1000
+        if data[0]:
+            self.WorkgroupHoldTime = data[0]//1000
+            self.WorkgroupAvgHoldTime = data[1]//1000
     
     
     def getNumberWorkgroupInteractions(self, days) :
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE '{self.date}%'"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -401,7 +408,7 @@ class DataBase:
 
 
     def getWorkgroupStatusTimes(self, days):
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE CONVERT(Datetime, CONVERT(varchar, '{self.date}', 103))"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -420,14 +427,16 @@ class DataBase:
         WHERE dIntervalStart {date} 
         GROUP BY cName
         """
+        print(SQL_Agent_Status)
 
         self.sqlConnection.execute(SQL_Agent_Status)
         data = self.sqlConnection.fetchall()
         self.WorkgroupStatusTimes = data
+        print(self.WorkgroupStatusTimes)
 
 
     def getNumberConnectedWorkgroupInteractions(self, days) :
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE '{self.date}%'"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -438,7 +447,7 @@ class DataBase:
 
 
     def getTalkTIme(self, user, days):
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE '{self.date}%'"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -455,7 +464,7 @@ class DataBase:
 
 
     def getAnswerSpeedTime(self, user, days):
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE '{self.date}%'"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -478,7 +487,7 @@ class DataBase:
     
     
     def getWorkgroupAnswerSpeedTime(self, days):
-        if self.date:
+        if self.date and self.date != ' ':
             date = f"LIKE '{self.date}%'"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
@@ -486,8 +495,8 @@ class DataBase:
         Answer_Speed_Time = f"SELECT AVG(tAlert) FROM InteractionSummary WHERE MediaType=0 AND LastAssignedWorkgroupID IS NOT NULL AND StartDateTimeUTC {date};"
         self.sqlConnection.execute(Answer_Speed_Time)
         Time = self.sqlConnection.fetchall()
-        
-        self.WorkgroupAverageAnswerSpeed = Time[0][0]/1000
+        if Time[0][0]:
+            self.WorkgroupAverageAnswerSpeed = Time[0][0]/1000
 
 
 

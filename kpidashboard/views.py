@@ -19,6 +19,9 @@ def agent(request):
     days = 1
     
     D = DataBase(request)
+
+    date = D.getDate(' ')
+
     D.connectToDatabase(server, database, username, password)
     D.getAfterCallWorkTime(user, days)
     D.getInteractionData(user, days)
@@ -46,7 +49,9 @@ def agent(request):
 
     context = {
         "data": {
-            'agent': agent_data
+            'agent': agent_data,
+            'agent_label': user,
+            'date_label': date
         }
     }
 
@@ -192,26 +197,28 @@ def department(request):
         agent_data = {}
         days = 1
         user = ''
-        date = ''
 
         if request.POST['data']:
             user = request.POST['data']
         else:
             user = request.user
-        
-        if request.POST['daterange']:
-            date = request.POST['daterange']
-        
 
-        
 
+        # Initiate the DataBase object for Agent and Workgroup data
+        # Workgroup Data
         D = DataBase(request)
-
-        
-        D.getDate(date)
         D.connectToDatabase(server, database, username, password)
+        date = D.getDate(request.POST['daterange'])
+
+        # Agent Data
+        D1 = DataBase(request)
+        D1.connectToDatabase(server, database, username, password)
+        date = D1.getDate(request.POST['daterange'])
+        
+        
+            
         D.getWorkgroups()
-        D.getInteractionData(user, days)
+        # D.getInteractionData(user, days)
         D.getWorkgroupStatusData()
         D.getOrgStatusData(days)
         D.getNumberWorkgroupInteractions(days)
@@ -226,32 +233,29 @@ def department(request):
         D.getWorkgroupCallbackData(days)
         D.getPercentageValues()
         D.convertTimeUnit()
-
-
-        D1 = DataBase(request)
-        D1.getDate(date)
-        D1.connectToDatabase(server, database, username, password)
-        D1.getAfterCallWorkTime(user, days)
-        D1.getInteractionData(user, days)
-        D1.getStatusData(user, days)
-        D1.getTalkTIme(user, days)
-        D1.getAnswerSpeedTime(user, days)
-        D1.getNumberQueueInteractions(user, days)
-        D1.getNumberAnsweredQueuedInteractions(user, days)
-        D1.getAgentCallbackData(user, days)
-        D1.getCallbackData(days)
-        D1.getAgentStatusData(user, days)
-        D1.convertTimeUnit()
-        P1 = ParseData()
-        P1.interaction = D1.Interaction_Data
-        P1.status = D1.Status_Data
-        P1.parseStatusData()
-        P1.parseInteractionData()
-        D1.Interaction_Data = P1.interaction
-        D1.Status_Data = P1.status
-        D1.Status_Stats = P1.StatusCheck()
-        D1.getAgentPercentageValues()
-
+        try:
+            D1.getAfterCallWorkTime(user, days)
+            D1.getInteractionData(user, days)
+            D1.getStatusData(user, days)
+            D1.getTalkTIme(user, days)
+            D1.getAnswerSpeedTime(user, days)
+            D1.getNumberQueueInteractions(user, days)
+            D1.getNumberAnsweredQueuedInteractions(user, days)
+            D1.getAgentCallbackData(user, days)
+            D1.getCallbackData(days)
+            D1.getAgentStatusData(user, days)
+            D1.convertTimeUnit()
+            P1 = ParseData()
+            P1.interaction = D1.Interaction_Data
+            P1.status = D1.Status_Data
+            P1.parseStatusData()
+            P1.parseInteractionData()
+            D1.Interaction_Data = P1.interaction
+            D1.Status_Data = P1.status
+            D1.Status_Stats = P1.StatusCheck()
+            D1.getAgentPercentageValues()
+        except:
+            pass
 
         dept_data = D.__dict__()
         agent_data = D1.__dict__()
@@ -260,7 +264,9 @@ def department(request):
         context = {
             "data": {
                 'agent': agent_data,
-                'dept': dept_data
+                'dept': dept_data,
+                'agent_label': user,
+                'date_label': date
             }
         }
 

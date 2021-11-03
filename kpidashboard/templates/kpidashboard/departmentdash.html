@@ -3,7 +3,10 @@
 <div class="container-fullwidth" id="widgetbox" onload="runpy();">
     <div class="container-fullwidth" id="agentSpecific">
         
-        <div class="d-flex justify-content-center p-2" id="widgetTitle" style="margin-bottom: .5%;">
+        <div class="d-flex justify-content-center p-2" id="widgetTitle" style="">
+        <div class="label_box_left">
+            <h6 class='col=md'>{{ data.date_label }}</h6>
+        </div>
         <h5>Department Status</h5>
         <form style="position:absolute;right:3%;" action="{% url 'dash:department' %}" method="post">
             {% csrf_token %}
@@ -14,15 +17,19 @@
         </form>
             
         </div>
-        <div class="row">
-            <div class="col overflow-auto" id="minutes" style="padding:0; margin:0;">
+        <div id="minutes">
                 <h6>Time In Each Status</h6>
+                </div>
+        <div class="row">
+            
+            <div class="col overflow-auto" id="minutes" style="padding:0; margin:0;">
+                
                 <table class="table table-hover">
                     <thead class="sticky-top" style="background-color:#CAF0F8; padding:0; margin:0;">
                         <tr>
                             <th>#</th>
                             {% for i in data.dept.WorkgroupStatusTitle %}
-                                <th>{{ i }}</th>
+                                <th style="padding-top:.5%">{{ i }}</th>
                             {% endfor %}
                         </tr>
                     </thead>
@@ -33,10 +40,10 @@
                                 {% for j in i %}
 
                                     {% if forloop.counter0 != 0 %}
-                                    <td>{{ j|date:'H:i:s' }}</td>
+                                        <td>{{ j|date:'H:i:s' }}</td>
                                     {% endif %}
                                     {% if forloop.counter0 == 0 %}
-                                    <td><strong>{{ j }}</strong></td>
+                                        <td><strong>{{ j }}</strong></td>
                                     {% endif %}
 
                                 {% endfor %}
