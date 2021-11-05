@@ -48,11 +48,11 @@
                 <div class="col-sm">
                     <h6>Total After Call Work Time</h6>
                     <img src="{% static 'kpidashboard/img/worktimeicon.png'  %}" width=30.5% height="30.5%">
-                    <h1 id="time">{{ data.agent.AfterCallWorkTime}}</h1>
+                    <h1 id="time" style='margin-bottom:3.5%'>{{ data.agent.AfterCallWorkTime}}</h1>
                 </div>
                 <div class="col-sm">
                     <h6>Average After Call Work Time</h6>
-                    <img src="{% static 'kpidashboard/img/averageworktimeincon.png'  %}" width=20% height="20%">
+                    <img src="{% static 'kpidashboard/img/averageworktimeincon.png'  %}" width=20.5% height="20%">
                     <h1 id="time">{{ data.agent.AvgAfterCallWorkTime }}</h1>
                 </div>
             </div>
@@ -91,19 +91,19 @@
 
 
         <div class="col-2" id="rowTwoAgent">
-            <h6>Average Speed to Answer Calls</h6>
+            <h6>Speed to Answer</h6>
             <div class="row">
                 <div class="col-sm">
                     <h6>Last Call</h6>
                     <div class="row">
-                        <img onclick="dude()" id="averageCallAnswerSpeed" src="{% static 'kpidashboard/img/speedicon.png'  %}"style="margin:3.5%;" width=15% height="15%">
-                        <h1 id="timespeed">{{ data.agent.LastCallAnswerSpeed }}</h1>
+                        <img id="averageCallAnswerSpeed" src="{% static 'kpidashboard/img/speedicon.png'  %}"style="margin:3.5%;" width=15% height="15%">
+                        <h1 id="timespeed" style='padding-left: 6%;'>{{ data.agent.LastCallAnswerSpeed }}</h1>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm">
-                    <h6>All Calls</h6>
+                    <h6>All Calls Average</h6>
                     <div class="row">
                         <img id="averageCallAnswerSpeed" src="{% static 'kpidashboard/img/averagespeedicon.png'  %}"style="margin:3.5%;" width=20% height="20%">
                         <h1  id="timespeed">{{ data.agent.AverageAnswerSpeed }}</h1>

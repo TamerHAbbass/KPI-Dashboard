@@ -159,7 +159,7 @@ class DataBase:
     def getDate(self, date):
         self.date = date
         if not date or ' ' == date:
-            return datetime.datetime.now().strftime('%d/%m/%Y') 
+            return datetime.datetime.now().strftime('%m/%d/%Y') 
         else:
             return datetime.datetime.strptime(date, '%Y-%m-%d').strftime('%m/%d/%Y')
 
@@ -570,7 +570,7 @@ class DataBase:
                 'NumberAgentCallbacks': self.NumberAgentCallbacks,
                 'NumberCallbacks': self.NumberCallbacks,
                 'NumberQueuedInteractions': self.NumberOfInteractions,
-                'NumberMissedQueuedInteractions': self.NumberOfInteractions-self.NumberAnsweredQueuedInteractions,
+                'NumberMissedQueuedInteractions': abs(self.NumberOfInteractions-self.NumberAnsweredQueuedInteractions),
                 'WorkgroupData': self.WorkgroupList,
                 'WorkgroupTalkTime': self.WorkgroupTalkTime,
                 'WorkgroupAvgTalkTime': self.WorkgroupAvgTalkTime,
@@ -599,11 +599,12 @@ class DataBase:
                 'totalTalkTime': self.TalkTime,
                 'averageTalkTime': self.AvgTalkTime,
                 'interactionData': self.Interaction_Data,
-                'statusData': self.Status_Data,
+                'statusData': self.Agent_Status_Data,
                 'statusWorkgroupData': self.Status_Workgroup_Data,
                 'status': self.Agent_Status_Data,
                 'LastCallAnswerSpeed': self.LastCallAnswerSpeed,
                 'AverageAnswerSpeed': self.AverageAnswerSpeed,
+                'NumberCallbacks': self.NumberCallbacks,
                 'HoldTime': self.HoldTime,
                 'AvgHoldTime': self.AvgHoldTime,
                 'AfterCallWorkTime': self.AfterCallWorkTime,

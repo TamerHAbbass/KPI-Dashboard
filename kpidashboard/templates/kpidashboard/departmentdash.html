@@ -10,40 +10,41 @@
         <h5>Department Status</h5>
         <form style="position:absolute;right:3%;" action="{% url 'dash:department' %}" method="post">
             {% csrf_token %}
-            <button class="btn btn btn-outline-info my-2 my-sm-0" type="submit"> search </button>
-            <input name="data" type="text" placeholder="Enter Agent Username">
-            <input type="date" name='daterange'>
+            <button class="search btn btn-sm btn-outline-info my-2 my-sm-0" type="submit"> search </button>
+            <input class='agentinput'name="data" type="text" placeholder="Enter Agent Username">
+            <input class='input' type="date" name='daterange'>
             
         </form>
             
         </div>
         <div id="minutes">
-                <h6>Time In Each Status</h6>
+                <h6 class='timeInStatusTitle'>Time In Each Status</h6>
                 </div>
-        <div class="row">
+        
+        <div class="row" style='margin-left: .04%; width:99.76%'>
             
-            <div class="col overflow-auto" id="minutes" style="padding:0; margin:0;">
+            <div class="col overflow-auto" id="minutes" style="padding:0; margin:0; width:75%;">
                 
                 <table class="table table-hover">
                     <thead class="sticky-top" style="background-color:#CAF0F8; padding:0; margin:0;">
                         <tr>
                             <th>#</th>
                             {% for i in data.dept.WorkgroupStatusTitle %}
-                                <th style="padding-top:.5%">{{ i }}</th>
+                                <th class='metrics' style="padding-top:.5%">{{ i }}</th>
                             {% endfor %}
                         </tr>
                     </thead>
                     {% for i in data.dept.WorkgroupStatusTimes %}
                         <tr>
-                            <th scope="row">{{forloop.counter}}</th>
+                            <th class='metrics' scope="row">{{forloop.counter}}</th>
 
                                 {% for j in i %}
 
                                     {% if forloop.counter0 != 0 %}
-                                        <td>{{ j|date:'H:i:s' }}</td>
+                                        <td class='metrics'>{{ j|date:'H:i:s' }}</td>
                                     {% endif %}
                                     {% if forloop.counter0 == 0 %}
-                                        <td><strong>{{ j }}</strong></td>
+                                        <td class='metrics'><strong>{{ j }}</strong></td>
                                     {% endif %}
 
                                 {% endfor %}
@@ -53,7 +54,7 @@
             </div>
         </div>
         
-        <div class="row">
+        <div class="row" style='margin-top: .5%'>
             <div class="col" id="rowOneAgent">
                 <h6>Talk Time</h6>
                 <div class="row">
@@ -97,7 +98,7 @@
                     <div class="col-sm">
                         <h6>Average After Call Work Time</h6>
                         <img src="{% static 'kpidashboard/img/averageworktimeincon.png' %}" width=20% height="25%">
-                        <h1 id="time">{{ data.dept.WorkgroupAvgAfterCallWorkTime }}</h1>
+                        <h1 id="time" style='margin-bottom:3.5%;'>{{ data.dept.WorkgroupAvgAfterCallWorkTime }}</h1>
                     </div>
                 </div>
             </div>

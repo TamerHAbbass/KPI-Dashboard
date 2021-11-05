@@ -66,6 +66,34 @@ html {
 }
 
 
+.col {
+    width:90% !important;
+}
+
+.metrics {
+    width:50% !important;
+}
+
+.timeInStatusTitle{
+    margin-bottom: .25%;
+    margin-top: 1%;
+}
+
+.input{
+    margin-top:0%;
+    padding: 0px 0px 0px 1px;
+}
+
+.agentinput{
+    margin-top:0%;
+    padding-bottom: .25%;
+}
+
+.search{
+    padding-bottom: .25%;
+    padding-top: .25%;
+}
+
 .col-sm {
     border-style: groove;
     border-color: lightgray;
