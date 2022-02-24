@@ -149,7 +149,26 @@ class DataBase:
         self.NumberAnsweredQueuedInteractionsPercentage = 0
         self.NumberMissedInteractionsPercentage = 0
         self.AgentCallbackPercentage = 0
+        self.WorkgroupSQLCommand = None
+        self.restrictTitlesTo = [
+            "cName",
+            "tAgentAvailable",
+            "tAgentDnd", 
+            "tAgentLoggedIn",
+            "tAgentLoggedInDiluted",
+            "tAgentNotAvailable", 
+            "tAgentOnNonAcdCall", 
+            "tAgentTalk",
+            "tAgentAcdLoggedIn",
+            "tAgentAcdLoggedIn2",
+            "tAlertedAcd",
+            "tAnsweredAcd",  
+            "tExternToInternCalls",
+            "tInternToExternCalls",
+            "tTalkAcd",
+            "tTalkCompleteAcd",
 
+        ]
 
     def connectToDatabase(self, server, database, username, password):
         cnxn = pyodbc.connect(f"DSN=IC_Server;UID={username};PWD={password}")
@@ -193,7 +212,6 @@ class DataBase:
         SQL_Agent_Interaction = f"SELECT SUM(tACW), AVG(tACW) FROM InteractionSummary WHERE LastLocalUserId='{user}' AND StartDateTimeUTC {date}"
         self.sqlConnection.execute(SQL_Agent_Interaction)
         Time = self.sqlConnection.fetchall()[0]
-        print(Time)
         if Time[0]:
             self.AfterCallWorkTime = Time[0]/1000
         if Time[1]:
@@ -404,35 +422,34 @@ class DataBase:
         SQL_Agent_Status = f"SELECT DISTINCT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='IWrkgrpQueueStats'"
         self.sqlConnection.execute(SQL_Agent_Status)
         data = self.sqlConnection.fetchall()
-        self.WorkgroupStatusTitle = [i[0][1:] for i in data if i[0][0] == 't' or 'cName' == i[0]]
+       
+        self.WorkgroupStatusTitle = [i[0][0:] for i in data if i[0][0] == 't']
+        
+        
+        
+    def buildSQLRequest(self):
+        
+        self.WorkgroupSQLCommand = "SELECT cName, "
+        
+        for i in self.WorkgroupStatusTitle:
+            if i in self.restrictTitlesTo:
+                self.WorkgroupSQLCommand += f"CONVERT(time(0), DATEADD(SECOND, SUM({i}),0)), "
 
 
     def getWorkgroupStatusTimes(self, days):
+        
         if self.date and self.date != ' ':
             date = f"LIKE CONVERT(Datetime, CONVERT(varchar, '{self.date}', 103))"
         else:
             date = f"> (select dateadd(day, -{days}, getdate()))"
 
-        SQL_Agent_Status = f"""
-        SELECT cName, 
-            CONVERT(time(0), DATEADD(SECOND, SUM(tAbandonedAcd),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tAcw),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tAcwCalls),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tAcwComplete),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tAgentAcdLoggedIn),0)), 
-            CONVERT(time(0), DATEADD(SECOND, SUM(tAgentAcdLoggedIn2),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tAgentAvailable),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tAgentDnd),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tAgentInAcw),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tAgentLoggedIn),0)), 
-            CONVERT(time(0), DATEADD(SECOND, SUM(tAgentLoggedInDiluted),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tAgentNotAvailable),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tAgentOnAcdCall),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tAgentOnNonAcdCall),0)), 
-            CONVERT(time(0), DATEADD(SECOND, SUM(tAgentOnOtherAcdCall),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tAgentOtherBusy),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tAgentStatusAcw),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tAgentStatusDnd),0)), 
-            CONVERT(time(0), DATEADD(SECOND, SUM(tAgentTalk),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tAlertedAcd),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tAnsweredAcd),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tExternToInternAcdCalls),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tExternToInternCalls),0)), 
-            CONVERT(time(0), DATEADD(SECOND, SUM(tFlowOutAcd),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tGrabbedAcd),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tHoldAcd),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tInternToExternAcdCalls),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tInternToExternCalls),0)), 
-            CONVERT(time(0), DATEADD(SECOND, SUM(tInternToInternAcdCalls),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tInternToInternCalls),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tStatusGroupBreak),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tStatusGroupFollowup),0)), 
-            CONVERT(time(0), DATEADD(SECOND, SUM(tStatusGroupTraining),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tSuspendedAcd),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tTalkAcd),0)), CONVERT(time(0), DATEADD(SECOND, SUM(tTalkCompleteAcd),0)) 
-        FROM IWrkgrpQueueStats
-        WHERE dIntervalStart {date} 
-        GROUP BY cName
-        """
-        print(SQL_Agent_Status)
-
-        self.sqlConnection.execute(SQL_Agent_Status)
+        self.WorkgroupSQLCommand = self.WorkgroupSQLCommand[:-2] + f" FROM IWrkgrpQueueStats WHERE dIntervalStart {date} GROUP BY cName"
+        self.sqlConnection.execute(self.WorkgroupSQLCommand)
+        
         data = self.sqlConnection.fetchall()
+        self.WorkgroupStatusTitle.insert(0, "cName")
+        self.WorkgroupStatusTitle = [i[1:] for i in self.WorkgroupStatusTitle if i in self.restrictTitlesTo]
         self.WorkgroupStatusTimes = data
-        print(self.WorkgroupStatusTimes)
 
 
     def getNumberConnectedWorkgroupInteractions(self, days) :

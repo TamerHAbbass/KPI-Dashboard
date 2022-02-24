@@ -128,6 +128,7 @@ def department_load(request):
 
     return render(request, context=context, template_name="kpidashboard/viewdepartment_load.html")
 
+
 def department(request):
 
     if request.method == 'GET':
@@ -149,6 +150,7 @@ def department(request):
         D.getWorkgroupHoldStats(days)
         D.getWorkgroupsAfterCallWorkTime(days)
         D.getWorkgroupStatusTitle()
+        D.buildSQLRequest()
         D.getWorkgroupStatusTimes(days)
         D.getWorkgroupAnswerSpeedTime(days)
         D.getPercentageValues()
@@ -233,6 +235,7 @@ def department(request):
         D.getWorkgroupCallbackData(days)
         D.getPercentageValues()
         D.convertTimeUnit()
+        
         try:
             D1.getAfterCallWorkTime(user, days)
             D1.getInteractionData(user, days)
@@ -278,7 +281,6 @@ def department(request):
 
     
 def department_historical(request):
-    print(dir(request))
     form = CustomReportRange()
     return render(request, context={'form':form}, template_name="kpidashboard/viewdepartment.html")
 

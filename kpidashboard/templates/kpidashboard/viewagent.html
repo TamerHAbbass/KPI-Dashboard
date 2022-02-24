@@ -1,4 +1,53 @@
-{% load static %}
-{% include 'kpidashboard/header.html' %}
-{% include 'kpidashboard/agentdashboard.html' %}
-{% include 'kpidashboard/footer.html' %}
+<div id='agentWrapper'>
+    {% load static %}
+    {% include 'kpidashboard/header.html' %}
+    {% include 'kpidashboard/agentdashboard.html' %}
+    {% include 'kpidashboard/footer.html' %}
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) { 
+        var scrollpos = sessionStorage.getItem('scrollpos');
+        if (scrollpos) window.scrollTo(0, scrollpos);
+    });
+
+    window.onbeforeunload = function(e) {
+        sessionStorage.setItem('scrollpos', window.scrollY);
+    };
+
+    function htmlDecode(str) {
+        const doc = new DOMParser().parseFromString(str, "text/html");
+        return doc.documentElement.textContent;
+    }
+    
+    function autorefresh() {
+        // auto refresh page after 1 second
+        setInterval('refreshPage()', 120000);
+    }
+    
+    function refreshPage() {
+        var token = '{{csrf_token}}';
+        var _data = '{{data}}'
+        
+        
+
+        console.log(htmlDecode(_data))
+        $.ajax({
+            headers: { "X-CSRFToken": token },
+            url: '{% url "dash:department" %}',
+            type: 'POST',
+            data: {'data': htmlDecode(_data), 'daterange': ''},
+            datatype: 'json',
+            success: function(data) {
+                location.reload();
+            }
+        });
+    }
+    autorefresh()
+</script>
+
+<style>
+    #agentWrapper {
+        min-width: 1900px;
+    }
+</style>

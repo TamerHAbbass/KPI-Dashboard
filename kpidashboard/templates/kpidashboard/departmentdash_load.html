@@ -169,18 +169,3 @@
 <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
 
 <!-- Load our React component. -->
-<script>
-var count = 1
-
-var counter = setInterval(timer , 100)
-
-function timer(){
-   count = count-1
-   if (count <= 0)
-   {
-       clearInterval(counter);
-       return window.location.replace("{% url 'dash:department' %}")
-   }
-
-}
-</script>

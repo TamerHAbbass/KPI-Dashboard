@@ -21,7 +21,7 @@ app_name="kpidashboard"
 
 urlpatterns = [
     path('department/', views.department, name='department'),
-    path('department-load/', views.department_load, name='department-load'),
+    path('department-screen/', views.department_load, name='department-screen'),
     path('department-historical/', views.department_historical, name='department-historical'),
     path('agent/', views.agent, name='agent'),
 ]
